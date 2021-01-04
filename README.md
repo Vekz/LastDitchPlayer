@@ -1,5 +1,5 @@
 # LastDitchPlayer
-Simple music player created using WPF. 
+Simple music player created using WPF and [NAudio](https://github.com/naudio/NAudio). 
 During this project focus was made on use of design patterns.
 
 ## Functionalities:
