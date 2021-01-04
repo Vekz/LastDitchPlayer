@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using LastDitchPlayer.Playlists;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,19 +8,16 @@ namespace LastDitchPlayer.OrderStrategy
 {
     public class NormalOrder : IOrderStrategy
     {
-        private NormalOrder():base()
+        public override Track getNextTrack(Playlist playlist, ref int lastIndex)
         {
-
-        }
-
-        public override IOrderStrategy getInstance()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Track getNextTrack(IEnumerable<Track> trackList)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                return playlist[++lastIndex];
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return null;
+            }
         }
     }
 }

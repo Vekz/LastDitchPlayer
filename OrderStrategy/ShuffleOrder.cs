@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using LastDitchPlayer.Playlists;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,19 +8,31 @@ namespace LastDitchPlayer.OrderStrategy
 {
     public class ShuffleOrder : IOrderStrategy
     {
-        private ShuffleOrder() : base()
-        {
+        Random rand;
 
+        public ShuffleOrder()
+        {
+            rand = new Random();
         }
 
-        public override IOrderStrategy getInstance()
+        public override Track getNextTrack(Playlist playlist, ref int lastIndex)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                int idx;
 
-        public override Track getNextTrack(IEnumerable<Track> trackList)
-        {
-            throw new NotImplementedException();
+                do
+                {
+                    idx = rand.Next(playlist.getLength());
+                } while (lastIndex == rand.Next(playlist.getLength()));
+
+                return playlist[idx];
+
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                return null;
+            }
         }
     }
 

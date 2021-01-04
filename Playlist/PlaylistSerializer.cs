@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LastDitchPlayer.Playlist
+namespace LastDitchPlayer.Playlists
 {
    public class PlaylistSerializer
     {

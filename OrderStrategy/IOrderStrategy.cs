@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using LastDitchPlayer.Playlists;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,14 +8,6 @@ namespace LastDitchPlayer.OrderStrategy
 {
    public abstract class IOrderStrategy
     {
-        private IOrderStrategy instance;
-
-        protected IOrderStrategy()
-        {
-
-        }
-
-        public abstract IOrderStrategy getInstance();
-        public abstract Track getNextTrack(IEnumerable<Track> trackList); 
+        public abstract Track getNextTrack(Playlist playlist, ref int lastIndex); 
     }
 }

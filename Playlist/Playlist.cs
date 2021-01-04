@@ -5,26 +5,44 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LastDitchPlayer.Playlist
+namespace LastDitchPlayer.Playlists
 {
     public class Playlist : IEnumerable<Track>
     {
         public List<Track> Tracks;
+        public IOrderStrategy currentStrategy;
+
+        private int lastIndex = 0;
+
+        public Track this[int index]
+        {
+            get { return Tracks[index]; }
+            set { Tracks.Insert(index, value); }
+        }
 
         public IEnumerator<Track> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            Track tmp;
+
+            tmp = currentStrategy.getNextTrack(this, ref lastIndex);
+
+            if (tmp != null) { yield return tmp; }
+            else { yield break; }
         }
 
         public void setStrategy(IOrderStrategy strategy)
         {
-            throw new NotImplementedException();
+            currentStrategy = strategy;
+        }
 
+        public int getLength()
+        {
+            return Tracks.Count;
         }
 
 
