@@ -24,7 +24,7 @@ namespace LastDitchPlayer.OrderStrategy
                 do
                 {
                     idx = rand.Next(playlist.getLength());
-                } while (lastIndex == rand.Next(playlist.getLength()));
+                } while (lastIndex == idx);
 
                 return playlist[idx];
 
