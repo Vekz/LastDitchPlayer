@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LastDitchPlayer.Players;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace LastDitchPlayer
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new Player();
         }
     }
 }
