@@ -47,7 +47,8 @@ namespace LastDitchPlayer.Classes
         {
             Name = name;
             FilePath = filePath;
-            Length = Math.Round(length/60, 2);
+            var tmp = Math.Truncate(length);
+            Length = length / 100 * 60;
         }
 
         private void OnPropertyChanged(string propertyName)

@@ -12,9 +12,9 @@ namespace LastDitchPlayer.OrderStrategy
         {
             try
             {
-                return playlist[++lastIndex];
+                return playlist[lastIndex++];
             }
-            catch (IndexOutOfRangeException e)
+            catch (ArgumentOutOfRangeException e)
             {
                 return null;
             }

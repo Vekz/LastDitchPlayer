@@ -28,17 +28,17 @@ namespace LastDitchPlayer.Playlists
 
         public IEnumerator<Track> GetEnumerator()
         {
-            return this.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
             Track tmp;
 
             tmp = currentStrategy.getNextTrack(this, ref lastIndex);
 
             if (tmp != null) { yield return tmp; }
             else { yield break; }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
 
         public void setStrategy(IOrderStrategy strategy)

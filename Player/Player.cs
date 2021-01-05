@@ -23,6 +23,8 @@ namespace LastDitchPlayer.Players
 
         public PlaybackStates currentState { get; set; }
 
+        public WaveOutEvent audioPlayer;
+
         public ICommand PlayCommand { get; }
         public ICommand ChangeStrategyCommand { get; }
         public ICommand OpenSongCommand { get; }
@@ -32,19 +34,23 @@ namespace LastDitchPlayer.Players
 
         public Player()
         {
+            //Setting up default output device
+            audioPlayer = new WaveOutEvent();
+
+            //Setting up default playback state
+            currentState = new Playbackx1();
+
             //Setting up flyweight pattern
             strategies = new List<IOrderStrategy>();
             strategies.Add(new NormalOrder());
             strategies.Add(new ShuffleOrder());
 
-            //Setting up defaul playlist
+            //Setting up default playlist
             playlist = new Playlist();
             playlist.setStrategy(strategies[strategyIdx]);
             strategyIdx++;
 
-            playlist.addTrack(new Track("Kijek na wrotkach","",2.5f));
-            playlist.addTrack(new Track("Kijek na kijach","",2.5f));
-
+            //Setting up buttons delegates
             PlayCommand = new DelegateCommand(Play);
             OpenSongCommand = new DelegateCommand(OpenSong);
             OpenPlaylistCommand = new DelegateCommand(OpenPlaylist);
@@ -56,7 +62,7 @@ namespace LastDitchPlayer.Players
         {
             foreach(Track track in playlist)
             {
-                currentState.Play(track); //Will this wait for the end of the song i dont know?
+                currentState.Play(track, audioPlayer); //Will this wait for the end of the song i dont know?
             }
         }
 
@@ -84,7 +90,8 @@ namespace LastDitchPlayer.Players
             {
                 String fName = openFileDialog.FileName;
                 AudioFileReader audioFile = new AudioFileReader(fName);
-                playlist.addTrack(new Track(fName.Remove(fName.LastIndexOf(".")), fName, audioFile.TotalTime.TotalSeconds));
+                playlist.addTrack(new Track(fName.Remove(fName.LastIndexOf(".")), fName, audioFile.TotalTime.TotalMinutes));
+                audioFile.Dispose();
             }
         }
 

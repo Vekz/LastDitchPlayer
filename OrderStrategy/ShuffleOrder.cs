@@ -29,7 +29,7 @@ namespace LastDitchPlayer.OrderStrategy
                 return playlist[idx];
 
             }
-            catch (IndexOutOfRangeException e)
+            catch (ArgumentOutOfRangeException e)
             {
                 return null;
             }

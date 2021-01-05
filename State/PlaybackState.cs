@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace LastDitchPlayer.State
 
         public abstract bool isValid();
 
-        public abstract void Play(Track track);
+        public abstract void Play(Track track, WaveOutEvent player);
 
     }
 }

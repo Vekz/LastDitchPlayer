@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace LastDitchPlayer.State
             throw new NotImplementedException();
         }
 
-        public override void Play(Track track)
+        public override void Play(Track track, WaveOutEvent player)
         {
             throw new NotImplementedException();
         }
