@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LastDitchPlayer.State
 {
-    public abstract class PlaybackState
+    public abstract class PlaybackStates
     {
         float runtime;
 

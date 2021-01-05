@@ -1,18 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace LastDitchPlayer.Classes
 {
-    public class Track
+    public class Track : INotifyPropertyChanged
     {
-        public string name;
-        public string filePath;
-        public float length;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public Track()
+        private string name;
+        public string Name 
+        { 
+            get { return name; }
+            set
+            {
+                name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+
+        private string filePath;
+        public string FilePath
         {
+            get { return filePath; }
+            set
+            {
+                filePath = value;
+                OnPropertyChanged("FilePath");
+            }
+        }
 
+        private double length;
+        public double Length
+        {
+            get { return length; }
+            set
+            {
+                length = value;
+                OnPropertyChanged("Length");
+            }
+        }
+
+        public Track(){}
+        public Track(string name, string filePath, double length)
+        {
+            Name = name;
+            FilePath = filePath;
+            Length = Math.Round(length/60, 2);
+        }
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

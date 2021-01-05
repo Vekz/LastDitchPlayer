@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LastDitchPlayer.State
 {
-    public class Playbackx1_5 : PlaybackState
+    public class Playbackx1_5 : PlaybackStates
     {
         public override bool isValid()
         {
