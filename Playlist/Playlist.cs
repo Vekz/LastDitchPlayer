@@ -12,6 +12,7 @@ namespace LastDitchPlayer.Playlists
     {
         public ObservableCollection<Track> Tracks { get; set; }
         public IOrderStrategy currentStrategy;
+        public string Name;
 
         private int lastIndex = 0;
 
@@ -70,7 +71,11 @@ namespace LastDitchPlayer.Playlists
 
         public void serializePlaylist()
         {
-            throw new NotImplementedException();
+
+            IEnumerable<Track> obsCollection = (IEnumerable<Track>)Tracks;
+            var list = new List<Track>(obsCollection);
+            PlaylistSerializer state = new PlaylistSerializer(list, this.Name);
+            state.Serialize(Name);
 
         }
 
