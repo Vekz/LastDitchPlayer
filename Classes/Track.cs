@@ -50,6 +50,15 @@ namespace LastDitchPlayer.Classes
             var tmp = Math.Truncate(length);
             Length = length / 100 * 60;
         }
+        /// <summary>
+        /// Loads track form given filepath
+        /// </summary>
+        /// <param name="filePath">A path to desired track</param>
+        public Track(string filePath)
+        {
+            Name = filePath.Remove(filePath.LastIndexOf("."));
+            this.filePath = filePath;
+        }
 
         private void OnPropertyChanged(string propertyName)
         {

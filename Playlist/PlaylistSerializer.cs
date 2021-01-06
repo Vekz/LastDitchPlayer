@@ -19,8 +19,8 @@ namespace LastDitchPlayer.Playlists
         }
 
 
-
-     public void Save()
+        #region Redundand // TODO:: I feel like following methods wont benefit us at all
+        public void Save()
         {
             throw new NotImplementedException();
         }
@@ -28,8 +28,17 @@ namespace LastDitchPlayer.Playlists
         public Playlist Load()
         {
             throw new NotImplementedException();
+
+            // return new Playlist() { Tracks = playList, Name = name };
         }
 
+        #endregion
+
+        #region Serialization 
+        /// <summary>
+        /// Serialize playlist state to XML file.
+        /// </summary>
+        /// <param name="fileName">A filepath with name where file should be saved</param>
         public void Serialize(string fileName)
         {
             List<XElement> elements = new List<XElement>();
@@ -48,7 +57,29 @@ namespace LastDitchPlayer.Playlists
 
         )
         );
-            file.Save($"{fileName}.xml");
+            file.Save($"{fileName}{(fileName.EndsWith(".xml") ? String.Empty :".xml")}");
         }
+
+        // TO DO: Check if xml is a playlist holder at all ASAP
+        /// <summary>
+        /// This method returns previously saved playlist.
+        /// </summary>
+        /// <param name="filePath">Path of file to deserialize</param>
+        /// <returns>Playlist parsed from deserialized XML file</returns>
+        public static Playlist Deserialize(string filePath)
+        {
+            XDocument file = XDocument.Load(filePath);
+            Playlist playlist = new Playlist();
+            XElement xmlPlaylist = file.Element("Playlists").Element("Playlist");
+            playlist.Name= xmlPlaylist.Attribute("Name").Value;
+            foreach (XElement Track in xmlPlaylist.Element("Tracks").Elements("Track"))
+            {
+                playlist.addTrack(new Track(Track.Value));
+            }
+
+            return playlist;
+        }
+
+        #endregion
     }
 }

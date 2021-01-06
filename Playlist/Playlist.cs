@@ -12,16 +12,22 @@ namespace LastDitchPlayer.Playlists
     {
         public ObservableCollection<Track> Tracks { get; set; }
         public IOrderStrategy currentStrategy;
+        public PlaylistSerializer currentState =>  currentStateIndx <= 0 ? new PlaylistSerializer(Tracks.listifyObservableTracks(), Name) : states[currentStateIndx];
+        public List<PlaylistSerializer> states;
         public string Name;
+        private int currentStateIndx = 0;
+
+
 
         //Custom enumerator vars
         public Track Current { get; private set; }
         object IEnumerator.Current => this.Current;
-        private int position = 0;
+        private int position = -1;
 
         public Playlist()
         {
             Tracks = new ObservableCollection<Track>();
+            states = new List<PlaylistSerializer>();
         }
 
         public Track this[int index]
@@ -30,7 +36,7 @@ namespace LastDitchPlayer.Playlists
             set { Tracks.Insert(index, value); }
         }
 
-        //Implement iterator interface
+        #region Implement iterator interface
         public bool MoveNext()
         {
             Track tmp;
@@ -53,7 +59,9 @@ namespace LastDitchPlayer.Playlists
 
         public void Dispose(){}
 
-        //Custom collection methods
+        #endregion
+
+        #region Custom collection methods
         public int getLength()
         {
             return Tracks.Count;
@@ -63,6 +71,7 @@ namespace LastDitchPlayer.Playlists
         {
             Tracks.Add(track);
         }
+        #endregion
 
         //Strategy pattern
         public void setStrategy(IOrderStrategy strategy)
@@ -70,27 +79,38 @@ namespace LastDitchPlayer.Playlists
             currentStrategy = strategy;
         }
 
+
+        #region Memento
+
+        /// <summary>
+        /// Adds current playlist state to state list
+        /// </summary>
         public void saveState()
          {
-            throw new NotImplementedException();
+
+            states.Add(new PlaylistSerializer(Tracks.listifyObservableTracks(), this.Name));
+            currentStateIndx++;
 
         }
 
-        internal void loadState(PlaylistSerializer serializer)
+    internal void loadState()
         {
             throw new NotImplementedException();
 
         }
 
+        #endregion
+
+        /// <summary>
+        /// Write playlist to XML file.
+        /// </summary>
+        ///  See <see cref="LastDitchPlayer.Playlists.PlaylistSerializer.Serialize(string)"/>
         public void serializePlaylist()
         {
-
-            IEnumerable<Track> obsCollection = (IEnumerable<Track>)Tracks;
-            var list = new List<Track>(obsCollection);
-            PlaylistSerializer state = new PlaylistSerializer(list, this.Name);
+            PlaylistSerializer state = currentState ?? new PlaylistSerializer(Tracks.listifyObservableTracks(), this.Name);
             state.Serialize(Name);
-
         }
+
 
     }
    

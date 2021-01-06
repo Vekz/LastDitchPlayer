@@ -25,6 +25,26 @@ namespace LastDitchPlayer
         {
             InitializeComponent();
             this.DataContext = new Player();
+            playBtn.Content = "\u25B7";
+        }
+
+        private void playBtn_Click(object sender, RoutedEventArgs e)
+        {
+            changePlayBttnState();
+        }
+
+        internal void changePlayBttnState()
+        {
+            var state = this.DataContext as Player;
+
+            if (state.currentState.GetType().FullName == "LastDitchPlayer.State.StatePaused")
+            {
+                playBtn.Content = "\u25B7";
+            }
+            else
+            {
+                playBtn.Content = "\u23F8";
+            }
         }
     }
 }

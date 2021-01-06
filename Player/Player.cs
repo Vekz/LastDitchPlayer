@@ -17,7 +17,19 @@ namespace LastDitchPlayer.Players
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Playlist playlist { get; set; }
+        private Playlist secretPlaylist;
+
+        public Playlist playlist { 
+            get
+            {
+                return secretPlaylist;
+            }
+            set
+            {
+                secretPlaylist = value;
+                OnPropertyChanged("playlist");
+            }
+        }
 
         public List<IOrderStrategy> strategies;
         private int strategyIdx = 0;
@@ -52,6 +64,8 @@ namespace LastDitchPlayer.Players
         public ICommand OpenSongCommand { get; }
         public ICommand OpenPlaylistCommand { get; }
         public ICommand SavePlaylistCommand { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
 
 
         public Player()
@@ -82,6 +96,8 @@ namespace LastDitchPlayer.Players
             OpenPlaylistCommand = new DelegateCommand(OpenPlaylist);
             SavePlaylistCommand = new DelegateCommand(SavePlaylist);
             ChangeStrategyCommand = new DelegateCommand(ChangeStrategy);
+            UndoCommand = new DelegateCommand(Undo);
+            RedoCommand = new DelegateCommand(Redo);
         }
 
         void Play()
@@ -131,13 +147,34 @@ namespace LastDitchPlayer.Players
 
         void OpenPlaylist()
         {
-            throw new NotImplementedException(); //TODO: LOADING PLAYLIST FROM FILE
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Playlist in XML format|*.xml";
+            bool? result = openFileDialog.ShowDialog();
+            if (result.HasValue && result.Value)
+            {
+                String fName = openFileDialog.FileName;
+                playlist = PlaylistSerializer.Deserialize(fName);
+            }
         }
 
         void SavePlaylist()
         {
-            playlist.Name = UtilClass.RandomAlphaNumericString(10);
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "XML file|*.xml";
+            saveFileDialog1.Title = "Save a playlist file";
+            saveFileDialog1.ShowDialog();
+            playlist.Name = saveFileDialog1.FileName == String.Empty ? UtilClass.RandomAlphaNumericString(10) : saveFileDialog1.FileName;
             playlist.serializePlaylist(); //or saveState() i'm not sure? //TODO: SAVING PLAYLIST TO FILE
+        }
+
+        void Undo()
+        {
+            throw new NotImplementedException();
+        }
+        void Redo()
+        {
+            throw new NotImplementedException();
+
         }
 
         private void OnPropertyChanged(string propertyName)

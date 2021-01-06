@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -15,6 +16,13 @@ namespace LastDitchPlayer.Classes
             return new string(Enumerable.Repeat(chars, lenght)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         
+        }
+
+        public static List<Track> listifyObservableTracks(this ObservableCollection<Track> tracks)
+        {
+            IEnumerable<Track> obsCollection = (IEnumerable<Track>)tracks;
+            var list = new List<Track>(obsCollection);
+            return list;
         }
     }
 }
