@@ -136,6 +136,7 @@ namespace LastDitchPlayer.Players
 
         void SavePlaylist()
         {
+            playlist.Name = UtilClass.RandomAlphaNumericString(10);
             playlist.serializePlaylist(); //or saveState() i'm not sure? //TODO: SAVING PLAYLIST TO FILE
         }
 

@@ -12,6 +12,7 @@ namespace LastDitchPlayer.Playlists
     {
         public ObservableCollection<Track> Tracks { get; set; }
         public IOrderStrategy currentStrategy;
+        public string Name;
 
         //Custom enumerator vars
         public Track Current { get; private set; }
@@ -83,7 +84,11 @@ namespace LastDitchPlayer.Playlists
 
         public void serializePlaylist()
         {
-            throw new NotImplementedException();
+
+            IEnumerable<Track> obsCollection = (IEnumerable<Track>)Tracks;
+            var list = new List<Track>(obsCollection);
+            PlaylistSerializer state = new PlaylistSerializer(list, this.Name);
+            state.Serialize(Name);
 
         }
 
