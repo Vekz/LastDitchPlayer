@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
@@ -23,6 +24,27 @@ namespace LastDitchPlayer.Players
 
         public PlaybackStates currentState { get; set; }
 
+        private ObservableCollection<string> states;
+        public ObservableCollection<string> States 
+        {
+            get { return this.states;  }
+            set
+            {
+                this.states = value;
+                OnPropertyChanged("States");
+            }
+        }
+        private string sstate;
+        public string Sstate
+        {
+            get { return sstate; }
+            set
+            {
+                this.sstate = value;
+                OnPropertyChanged("Sstate");
+            }
+        }
+
         public WaveOutEvent audioPlayer;
 
         public ICommand PlayCommand { get; }
@@ -37,8 +59,12 @@ namespace LastDitchPlayer.Players
             //Setting up default output device
             audioPlayer = new WaveOutEvent();
 
+            //Populate states combobox
+            States = new ObservableCollection<string>() { "0.5x", "1.0x", "1.5x", "2.0x" };
+
             //Setting up default playback state
-            currentState = new Playbackx1();
+            currentState = new Playback();
+            Sstate = states[1];
 
             //Setting up flyweight pattern
             strategies = new List<IOrderStrategy>();
@@ -63,7 +89,8 @@ namespace LastDitchPlayer.Players
             Track track = playlist.Current;
             if(track != null)
             {
-                currentState = currentState.Play(track, audioPlayer);
+
+                currentState = currentState.Play(track, audioPlayer, Sstate);
 
                 if (currentState.GetType().FullName != "LastDitchPlayer.State.StatePaused") 
                 {
@@ -112,5 +139,12 @@ namespace LastDitchPlayer.Players
             playlist.serializePlaylist(); //or saveState() i'm not sure? //TODO: SAVING PLAYLIST TO FILE
         }
 
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

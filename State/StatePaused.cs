@@ -13,10 +13,10 @@ namespace LastDitchPlayer.State
             throw new NotImplementedException();
         }
 
-        public override PlaybackStates Play(Track track, WaveOutEvent player)
+        public override PlaybackStates Play(Track track, WaveOutEvent player, string speed)
         {
             player.Pause();
-            return new Playbackx1();
+            return new Playback();
         }
     }
 }

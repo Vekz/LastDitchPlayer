@@ -36,7 +36,7 @@
         </ProgressBar>
         <ToggleButton Command="{Binding ChangeStrategyCommand}" x:Name="shuffleBtn" Content="&#x292E;" HorizontalAlignment="Left" Margin="279,297,0,0" VerticalAlignment="Top" Height="54" Width="54" FontSize="20"/>
         <ToggleButton Command="{Binding PlayCommand}" x:Name="playBtn" HorizontalAlignment="Center" Margin="0,282,0,0" VerticalAlignment="Top" Height="90" Width="90" Content="&#x25B7;" FontSize="40"/>
-        <ComboBox x:Name="speedCombo" HorizontalAlignment="Right" Margin="0,307,278,0" VerticalAlignment="Top" Width="56" Height="40"/>
+        <ComboBox ItemsSource="{Binding States}" SelectedItem="{Binding Sstate}" x:Name="speedCombo" HorizontalAlignment="Right" Margin="0,307,278,0" VerticalAlignment="Top" Width="56" Height="40"/>
         <Button Command="{Binding SavePlaylistCommand}" x:Name="savePlaylistBtn" Margin="14,284,0,0" Width="80" Height="30" RenderTransformOrigin="0.5,0.467" Content="Save Playlist" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Command="{Binding OpenPlaylistCommand}" x:Name="openPlaylistBtn" Margin="14,319,0,0" Width="80" Height="30" Content="Open Playlist" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button Command="{Binding OpenSongCommand}" x:Name="openSongBtn" Margin="14,354,0,0" Width="80" Height="30" Content="Open Song" HorizontalAlignment="Left" VerticalAlignment="Top"/>
