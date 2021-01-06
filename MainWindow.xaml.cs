@@ -46,5 +46,7 @@ namespace LastDitchPlayer
                 playBtn.Content = "\u23F8";
             }
         }
+
+
     }
 }

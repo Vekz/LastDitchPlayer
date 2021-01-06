@@ -25,7 +25,7 @@ namespace LastDitchPlayer.OrderStrategy
                 {
                     idx = rand.Next(playlist.getLength());
                 } while (position == idx);
-
+                position = idx;
                 return playlist[idx];
 
             }

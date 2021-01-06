@@ -12,7 +12,8 @@ namespace LastDitchPlayer.OrderStrategy
         {
             try
             {
-                return playlist[position++];
+                position += 1;
+                return playlist[position];
             }
             catch (ArgumentOutOfRangeException e)
             {

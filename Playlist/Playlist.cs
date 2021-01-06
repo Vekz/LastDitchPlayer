@@ -22,6 +22,7 @@ namespace LastDitchPlayer.Playlists
         //Custom enumerator vars
         public Track Current { get; private set; }
         object IEnumerator.Current => this.Current;
+        //REMEBER: Change this variable to private when done debugging
         private int position = -1;
 
         public Playlist()
@@ -30,13 +31,14 @@ namespace LastDitchPlayer.Playlists
             states = new List<PlaylistSerializer>();
         }
 
+        #region Implement iterator interface
+      
         public Track this[int index]
         {
             get { return Tracks[index]; }
             set { Tracks.Insert(index, value); }
         }
 
-        #region Implement iterator interface
         public bool MoveNext()
         {
             Track tmp;
@@ -48,6 +50,7 @@ namespace LastDitchPlayer.Playlists
             }
             else
             {
+                Current = null;
                 return false;
             }
         }
