@@ -8,11 +8,11 @@ namespace LastDitchPlayer.OrderStrategy
 {
     public class NormalOrder : IOrderStrategy
     {
-        public override Track getNextTrack(Playlist playlist, ref int lastIndex)
+        public override Track getNextTrack(Playlist playlist, ref int position)
         {
             try
             {
-                return playlist[lastIndex++];
+                return playlist[position++];
             }
             catch (ArgumentOutOfRangeException e)
             {

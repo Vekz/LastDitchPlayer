@@ -12,7 +12,7 @@ namespace LastDitchPlayer.State
 
         public abstract bool isValid();
 
-        public abstract void Play(Track track, WaveOutEvent player);
+        public abstract PlaybackStates Play(Track track, WaveOutEvent player);
 
     }
 }

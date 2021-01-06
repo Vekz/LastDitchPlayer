@@ -60,9 +60,15 @@ namespace LastDitchPlayer.Players
 
         void Play()
         {
-            foreach(Track track in playlist)
+            Track track = playlist.Current;
+            if(track != null)
             {
-                currentState.Play(track, audioPlayer); //Will this wait for the end of the song i dont know?
+                currentState = currentState.Play(track, audioPlayer);
+
+                if (currentState.GetType().FullName != "LastDitchPlayer.State.StatePaused") 
+                {
+                    playlist.MoveNext();
+                }
             }
         }
 
@@ -93,6 +99,7 @@ namespace LastDitchPlayer.Players
                 playlist.addTrack(new Track(fName.Remove(fName.LastIndexOf(".")), fName, audioFile.TotalTime.TotalMinutes));
                 audioFile.Dispose();
             }
+            playlist.MoveNext();
         }
 
         void OpenPlaylist()

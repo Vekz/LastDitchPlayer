@@ -13,11 +13,15 @@ namespace LastDitchPlayer.State
             throw new NotImplementedException();
         }
 
-        public override void Play(Track track, WaveOutEvent player)
+        public override PlaybackStates Play(Track track, WaveOutEvent player)
         {
             var audioFile = new AudioFileReader(track.FilePath);
-            player.Init(audioFile);
+            if(player.PlaybackState == PlaybackState.Stopped) 
+            { 
+                player.Init(audioFile);
+            }
             player.Play();
+            return new StatePaused();
         }
     }
 }

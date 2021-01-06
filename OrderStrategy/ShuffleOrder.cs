@@ -15,7 +15,7 @@ namespace LastDitchPlayer.OrderStrategy
             rand = new Random();
         }
 
-        public override Track getNextTrack(Playlist playlist, ref int lastIndex)
+        public override Track getNextTrack(Playlist playlist, ref int position)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace LastDitchPlayer.OrderStrategy
                 do
                 {
                     idx = rand.Next(playlist.getLength());
-                } while (lastIndex == idx);
+                } while (position == idx);
 
                 return playlist[idx];
 

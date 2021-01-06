@@ -8,12 +8,15 @@ using System.Text;
 
 namespace LastDitchPlayer.Playlists
 {
-    public class Playlist : IEnumerable<Track>
+    public class Playlist : IEnumerator<Track>
     {
         public ObservableCollection<Track> Tracks { get; set; }
         public IOrderStrategy currentStrategy;
 
-        private int lastIndex = 0;
+        //Custom enumerator vars
+        public Track Current { get; private set; }
+        object IEnumerator.Current => this.Current;
+        private int position = 0;
 
         public Playlist()
         {
@@ -26,26 +29,30 @@ namespace LastDitchPlayer.Playlists
             set { Tracks.Insert(index, value); }
         }
 
-        public IEnumerator<Track> GetEnumerator()
+        //Implement iterator interface
+        public bool MoveNext()
         {
             Track tmp;
-
-            tmp = currentStrategy.getNextTrack(this, ref lastIndex);
-
-            if (tmp != null) { yield return tmp; }
-            else { yield break; }
+            tmp = currentStrategy.getNextTrack(this, ref position);
+            if(tmp != null) 
+            {
+                Current = tmp;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public void Reset()
         {
-            return this.GetEnumerator();
+            position = 0;
         }
 
-        public void setStrategy(IOrderStrategy strategy)
-        {
-            currentStrategy = strategy;
-        }
+        public void Dispose(){}
 
+        //Custom collection methods
         public int getLength()
         {
             return Tracks.Count;
@@ -54,6 +61,12 @@ namespace LastDitchPlayer.Playlists
         public void addTrack(Track track)
         {
             Tracks.Add(track);
+        }
+
+        //Strategy pattern
+        public void setStrategy(IOrderStrategy strategy)
+        {
+            currentStrategy = strategy;
         }
 
         public void saveState()
