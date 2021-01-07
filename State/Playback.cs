@@ -9,6 +9,8 @@ namespace LastDitchPlayer.State
 {
     public class Playback : PlaybackStates
     {
+        private static string lastPlayback = "";
+
         public override bool isValid()
         {
             throw new NotImplementedException();
@@ -16,11 +18,16 @@ namespace LastDitchPlayer.State
 
         public override PlaybackStates Play(Track track, WaveOutEvent player, string speed)
         {
+            if(lastPlayback != track.FilePath)
+            {
+                player.Stop();
+                lastPlayback = track.FilePath;
+            }
+
             if (player.PlaybackState == PlaybackState.Stopped)
             {
                 var audioFile = new AudioFileReader(track.FilePath);
                 var output = new SoundTouchWaveProvider(audioFile);
-
                 if (speed == "0.5x")
                 {    
                     output.RateChange = -50;

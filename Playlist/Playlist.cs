@@ -71,13 +71,20 @@ namespace LastDitchPlayer.Playlists
         {
             Tracks.Add(track);
         }
+
+        public void selectTrack(Track track)
+        {
+            Current = track;
+            position = Tracks.IndexOf(track);
+        }
         #endregion
 
-        //Strategy pattern
+        #region Strategy pattern
         public void setStrategy(IOrderStrategy strategy)
         {
             currentStrategy = strategy;
         }
+        #endregion
 
 
         #region Memento

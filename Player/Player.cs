@@ -18,7 +18,6 @@ namespace LastDitchPlayer.Players
         public event PropertyChangedEventHandler PropertyChanged;
 
         private Playlist secretPlaylist;
-
         public Playlist playlist { 
             get
             {
@@ -54,6 +53,18 @@ namespace LastDitchPlayer.Players
             {
                 this.sstate = value;
                 OnPropertyChanged("Sstate");
+            }
+        }
+
+        private Track sitem;
+        public Track Sitem
+        {
+            get { return sitem; }
+            set
+            {
+                this.sitem = value;
+                playlist.selectTrack(sitem);
+                OnPropertyChanged("Sitem");
             }
         }
 
