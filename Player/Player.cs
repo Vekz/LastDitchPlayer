@@ -77,6 +77,8 @@ namespace LastDitchPlayer.Players
         public ICommand SavePlaylistCommand { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
+        public ICommand NextAudioCommand { get; }
+        public ICommand PrevAudioCommand { get; }
 
 
         public Player()
@@ -109,6 +111,8 @@ namespace LastDitchPlayer.Players
             ChangeStrategyCommand = new DelegateCommand(ChangeStrategy);
             UndoCommand = new DelegateCommand(Undo);
             RedoCommand = new DelegateCommand(Redo);
+            NextAudioCommand = new DelegateCommand(NextAudio);
+            PrevAudioCommand = new DelegateCommand(PrevAudio);
         }
 
         void Play()
@@ -121,7 +125,8 @@ namespace LastDitchPlayer.Players
 
                 if (currentState.GetType().FullName != "LastDitchPlayer.State.StatePaused") 
                 {
-                    playlist.MoveNext();
+                    //if (!playlist.MoveNext())
+                    //    playlist.Reset();
                 }
             }
         }
@@ -156,6 +161,10 @@ namespace LastDitchPlayer.Players
             playlist.MoveNext();
         }
 
+        #region Getting and saving playlists
+        /// <summary>
+        /// Opens file dialog which lets user to load playlist from xml file.
+        /// </summary>
         void OpenPlaylist()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -165,9 +174,13 @@ namespace LastDitchPlayer.Players
             {
                 String fName = openFileDialog.FileName;
                 playlist = PlaylistSerializer.Deserialize(fName);
+                playlist.setStrategy(strategies[strategyIdx]);
             }
         }
 
+        /// <summary>
+        /// Opens file dialog which lets user to save playlist to xml file.
+        /// </summary>
         void SavePlaylist()
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -175,9 +188,11 @@ namespace LastDitchPlayer.Players
             saveFileDialog1.Title = "Save a playlist file";
             saveFileDialog1.ShowDialog();
             playlist.Name = saveFileDialog1.FileName == String.Empty ? UtilClass.RandomAlphaNumericString(10) : saveFileDialog1.FileName;
-            playlist.serializePlaylist(); //or saveState() i'm not sure? //TODO: SAVING PLAYLIST TO FILE
+            playlist.serializePlaylist(); 
         }
+        #endregion
 
+        #region Memento
         void Undo()
         {
             throw new NotImplementedException();
@@ -188,6 +203,8 @@ namespace LastDitchPlayer.Players
 
         }
 
+        #endregion
+
         private void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -195,5 +212,25 @@ namespace LastDitchPlayer.Players
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        #region Change/Reset current audio
+        
+        private void NextAudio()
+        {
+            audioPlayer.Stop();
+            if (!playlist.MoveNext() && playlist.Current == null)
+            {
+                playlist.Reset();
+            }
+           // OnPropertyChanged("playlist");
+            Play();
+            Play();
+        }
+
+        private void PrevAudio()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
