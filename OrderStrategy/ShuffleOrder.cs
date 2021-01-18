@@ -34,6 +34,11 @@ namespace LastDitchPlayer.OrderStrategy
                 return null;
             }
         }
+
+        public override Track getPrevTrack(Playlist playlist, ref int lastIndex)
+        {
+            return getNextTrack(playlist, ref lastIndex);
+        }
     }
 
 }

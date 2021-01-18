@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using LastDitchPlayer.Playlists;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,16 @@ namespace LastDitchPlayer.State
             throw new NotImplementedException();
         }
 
+        public override void nextSongAuto(Playlist playlist)
+        {
+            throw new NotImplementedException();
+        }
+
         public override PlaybackStates Play(Track track, WaveOutEvent player, string speed)
         {
             player.Pause();
             return new Playback();
         }
+
     }
 }

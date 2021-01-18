@@ -53,6 +53,22 @@ namespace LastDitchPlayer.Playlists
                 Current = null;
                 return false;
             }
+        }    
+        
+        public bool MovePrev()
+        {
+            Track tmp;
+            tmp = currentStrategy.getPrevTrack(this, ref position);
+            if(tmp != null) 
+            {
+                Current = tmp;
+                return true;
+            }
+            else
+            {
+                Current = null;
+                return false;
+            }
         }
 
         public void Reset()
@@ -97,15 +113,29 @@ namespace LastDitchPlayer.Playlists
         /// </summary>
         public void saveState()
          {
+            if(currentStateIndx != 0 )
+            {
+                states.Clear();
+                currentStateIndx = 0;
+            }
+            states.Insert(0,new PlaylistSerializer(Tracks.listifyObservableTracks(), this.Name));
 
-            states.Add(new PlaylistSerializer(Tracks.listifyObservableTracks(), this.Name));
-            currentStateIndx++;
 
         }
 
-    internal void loadState()
+    internal void loadNextState()
         {
-            throw new NotImplementedException();
+            currentStateIndx = currentStateIndx - 1 < 0 ? 0 : currentStateIndx - 1;
+            PlaylistSerializer temp = states[currentStateIndx];
+            Tracks = temp.playList.listToObservable();
+
+        } 
+        
+        internal void loadPrevState()
+        {
+            currentStateIndx = currentStateIndx + 1 > states.Count-1 ? currentStateIndx : currentStateIndx + 1;
+            PlaylistSerializer temp = states[currentStateIndx];
+            Tracks = temp.playList.listToObservable();
 
         }
 

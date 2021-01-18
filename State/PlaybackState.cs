@@ -14,5 +14,7 @@ namespace LastDitchPlayer.State
 
         public abstract PlaybackStates Play(Track track, WaveOutEvent player, string speed);
 
+        public abstract void nextSongAuto(Playlists.Playlist playlist);
+
     }
 }

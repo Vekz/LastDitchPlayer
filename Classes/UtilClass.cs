@@ -24,5 +24,12 @@ namespace LastDitchPlayer.Classes
             var list = new List<Track>(obsCollection);
             return list;
         }
+
+        public static ObservableCollection<Track> listToObservable(this List<Track> tracks)
+        {
+            IEnumerable<Track> regular = (IEnumerable<Track>)tracks;
+            var list = new ObservableCollection<Track>(regular);
+            return list;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using LastDitchPlayer.Playlists;
 using NAudio.Wave;
 using SoundTouch.Net.NAudioSupport;
 using System;
@@ -16,6 +17,11 @@ namespace LastDitchPlayer.State
             throw new NotImplementedException();
         }
 
+        public override void nextSongAuto(Playlist playlist)
+        {
+            throw new NotImplementedException();
+        }
+
         public override PlaybackStates Play(Track track, WaveOutEvent player, string speed)
         {
             if(lastPlayback != track.FilePath)
@@ -27,7 +33,10 @@ namespace LastDitchPlayer.State
             if (player.PlaybackState == PlaybackState.Stopped)
             {
                 var audioFile = new AudioFileReader(track.FilePath);
+
                 var output = new SoundTouchWaveProvider(audioFile);
+
+
                 if (speed == "0.5x")
                 {    
                     output.RateChange = -50;
@@ -51,6 +60,8 @@ namespace LastDitchPlayer.State
             player.Play();
             return new StatePaused();
         }
+
+
     }
 }
 

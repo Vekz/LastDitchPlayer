@@ -123,11 +123,13 @@ namespace LastDitchPlayer.Players
 
                 currentState = currentState.Play(track, audioPlayer, Sstate);
 
-                if (currentState.GetType().FullName != "LastDitchPlayer.State.StatePaused") 
-                {
-                    //if (!playlist.MoveNext())
-                    //    playlist.Reset();
-                }
+               // NextAudio();
+
+                //if (currentState.GetType().FullName != "LastDitchPlayer.State.StatePaused") 
+                //{
+                //    if (!playlist.MoveNext())
+                //       playlist.Reset();
+                //}
             }
         }
 
@@ -155,6 +157,7 @@ namespace LastDitchPlayer.Players
             {
                 String fName = openFileDialog.FileName;
                 AudioFileReader audioFile = new AudioFileReader(fName);
+                playlist.saveState();
                 playlist.addTrack(new Track(fName.Remove(fName.LastIndexOf(".")), fName, audioFile.TotalTime.TotalMinutes));
                 audioFile.Dispose();
             }
@@ -176,6 +179,7 @@ namespace LastDitchPlayer.Players
                 playlist = PlaylistSerializer.Deserialize(fName);
                 playlist.setStrategy(strategies[strategyIdx]);
             }
+         
         }
 
         /// <summary>
@@ -195,11 +199,13 @@ namespace LastDitchPlayer.Players
         #region Memento
         void Undo()
         {
-            throw new NotImplementedException();
+            playlist.loadPrevState();
+            OnPropertyChanged("playlist");
         }
         void Redo()
         {
-            throw new NotImplementedException();
+            playlist.loadNextState();
+            OnPropertyChanged("playlist");
 
         }
 
@@ -229,7 +235,14 @@ namespace LastDitchPlayer.Players
 
         private void PrevAudio()
         {
-            throw new NotImplementedException();
+            audioPlayer.Stop();
+            if (!playlist.MovePrev() && playlist.Current == null)
+            {
+                return;
+            }
+            // OnPropertyChanged("playlist");
+            Play();
+            Play();
         }
         #endregion
     }
