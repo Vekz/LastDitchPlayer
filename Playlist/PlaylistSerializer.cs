@@ -1,4 +1,5 @@
 ﻿using LastDitchPlayer.Classes;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -74,7 +75,9 @@ namespace LastDitchPlayer.Playlists
             playlist.Name= xmlPlaylist.Attribute("Name").Value;
             foreach (XElement Track in xmlPlaylist.Element("Tracks").Elements("Track"))
             {
-                playlist.addTrack(new Track(Track.Value));
+                AudioFileReader audioFile = new AudioFileReader(Track.Value);
+                playlist.addTrack(new Track(Track.Value.Remove(Track.Value.LastIndexOf(".")), Track.Value, audioFile.TotalTime.TotalMinutes));
+                audioFile.Dispose();
             }
 
             return playlist;

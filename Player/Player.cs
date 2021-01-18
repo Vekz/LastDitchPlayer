@@ -128,7 +128,10 @@ namespace LastDitchPlayer.Players
                 //if (currentState.GetType().FullName != "LastDitchPlayer.State.StatePaused") 
                 //{
                 //    if (!playlist.MoveNext())
-                //       playlist.Reset();
+                //    {
+                //        playlist.Reset();
+                //        Play();
+                //    }
                 //}
             }
         }
